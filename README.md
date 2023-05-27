@@ -3,4 +3,4 @@ This is my frist repository
 
 This is my first commit.
 
-Hi there! :)
+Hi there! :D
