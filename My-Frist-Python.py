@@ -1,30 +1,29 @@
 # Number
 
-Number1 = 12
-Number2 = 24.12
-Number3 = 48.2412
+number1 = 12
+number2 = 24.12
+number3 = 48.2412
 
-#String
+# String
 
-Name = "Éva"
-Haircolor = "Brown"
+name = "Éva"
+haircolor = "Brown"
 
-#Boolean
+# Boolean
 
-Igaz = True
-Hamis = False
+true = True
+false = False
 
-#List
+# List
 
 my_list = []
 
-#Tuple
+# Tuple
 
 my_tuple = ()
 
-#Diationary
+# Dictionary
 
-my_diat = ()
+my_dict = {}
 
-#Users defined
-
+# Users defined
