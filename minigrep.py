@@ -1,40 +1,67 @@
-def search(input: str, pattern: str) -> list:
-    """Search the first word of a string given a pattern."""
-    first_index = input.find(pattern)
-    
-    while input[first_index] != ' ' :
-        first_index = first_index - 1
+import sys
+import os.path
 
-    list_of_words = input[first_index:].split()
 
-    matched_word = []
-    for element in list_of_words:
-        if pattern in element:
-            matched_word.append(element)
-    
-    return '\n'.join(matched_word)
+def find_indicies(content: str, pattern: str) -> list:
+    """Return a list of indicies from the `content` string that contains the `pattern` string."""
+    input_words = content.split()
 
-def search_ignore_case(input: str, pattern: str) -> str:
-    """Search the first word of a string given a pattern. It ignores capital letters."""
-    return search(input.lower(), pattern.lower())
+    indicies = [idx for idx, word in enumerate(input_words) if pattern in word]
 
-def search_ignore_case2(input: str, pattern: str) -> str:
-    
-    original_words = input.split()
-    found_words = []
+    return indicies
 
-    for idx, element in enumerate(original_words):
-        if pattern.lower() in element.lower():
-            found_words.append(original_words[idx])
+
+def search(content: str, pattern: str, ignore_case: bool = False) -> list:
+    """Return a list of words from `content` string that contains the `pattern` string. It ignores capital letters."""
+    if ignore_case:
+        content = content.lower()
+        pattern = pattern.lower()
+
+    indicies = find_indicies(content, pattern)
+    words = content.split()
+
+    found_words = [words[index] for index in indicies]
 
     return found_words
 
 
-gerp_description = """
-In Linux and Unix Systems Grep, short for “global regular expression print”, 
-is a command used in searchING and matchiNg text files contained in the regular expressions."""
+def read_arguments(arguments: list) -> tuple:
+    """Read the content of the file last argument"""
+    file = arguments[-1]
+    pattern = arguments[-2]
 
-pattern = "InG"
+    file_content = ""
+    with open(file, encoding="utf-8") as file:
+        file_content = file.read()
 
-found_words = search_ignore_case2(gerp_description, pattern)
-print(found_words)
+    return file_content, pattern
+
+
+if __name__ == "__main__":
+    if len(sys.argv) < 3:
+        print("Usage: python3 minigrep.py [OPTION] PATTERNS FILE")
+        print("Example: `python3 minigrep.py -i 'and' grep.txt`")
+        print("Use `python3 minigrep.py --help` for more details.")
+        sys.exit()
+
+    if sys.argv[1] == "--help":
+        print("Usage: python3 minigrep.py [OPTION] PATTERNS FILE")
+        print("Example: `python3 minigrep.py -i 'and' grep.txt`")
+        print()
+        print("Options:")
+        print("\t -i, --ignore-case\t ignore capital letters")
+        print("Report bugs at <https://github.com/BaBaReZu1/hello-world>")
+
+    file_name = sys.argv[-1]
+    if not os.path.exists(file_name):
+        print(f"The {0} file does not exist. Please create the file.", file_name)
+
+    content, pattern = read_arguments(sys.argv)
+
+    found_words = []
+    if len(sys.argv) == 3:
+        found_words = search(content, pattern)
+    elif sys.argv[1] == "-i" or sys.argv[1] == "--ignore-case":
+        found_words = search(content, pattern, True)
+
+    print(found_words)
